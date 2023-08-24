@@ -1,4 +1,4 @@
-package capacity
+package storage
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ const (
 	PB         = 1024 * TB
 )
 
-var unit = []string{"b", "kb", "mb", "gb", "tb", "pb"}
+var unit = []string{"B", "KB", "MB", "GB", "TB", "PB"}
 
 type Capacity struct {
 	value float64 // default unit is byte
@@ -22,6 +22,7 @@ type Capacity struct {
 
 func (c *Capacity) String() string {
 	u := math.Floor(math.Log2(c.value) / 10)
+	u = math.Min(5, math.Max(0, u))
 	v := c.value / unitMap[unit[int64(u)]]
 	return fmt.Sprintf("%.2f%s", v, unit[int64(u)])
 }

@@ -1,4 +1,4 @@
-package capacity
+package storage
 
 import (
 	"errors"
@@ -8,20 +8,25 @@ import (
 )
 
 var unitMap = map[string]float64{
-	"b":  float64(B),
-	"kb": float64(KB),
-	"mb": float64(MB),
-	"gb": float64(GB),
-	"tb": float64(TB),
-	"pb": float64(PB),
+	"B":  float64(B),
+	"KB": float64(KB),
+	"MB": float64(MB),
+	"GB": float64(GB),
+	"TB": float64(TB),
+	"PB": float64(PB),
 }
 
+// ParseCapacity parsers capacity's string to Capacity.
+//
+//	@param s the capacity's string.
+//	@return *Capacity
+//	@return error
 func ParseCapacity(s string) (*Capacity, error) {
 
 	orig := s
 
-	s = strings.ToLower(s)
-	t, _ := regexp.Compile("^([0-9]*[.]?[0-9]+)([kmgtp]?[b]{1})$")
+	s = strings.ToUpper(s)
+	t, _ := regexp.Compile(`^([0-9]*[.]?[0-9]+)[\s]*([KMGTP]?[B]{1})$`)
 	if !t.MatchString(s) {
 		return nil, errors.New("storage: invalid capacity " + orig)
 	}
